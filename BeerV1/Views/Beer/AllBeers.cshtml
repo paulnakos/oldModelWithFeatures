@@ -1,0 +1,31 @@
+﻿@model IEnumerable<BeerV1.Models.Beer>
+@{
+    ViewBag.Title = "AllBeers";
+}
+
+<h2>All Available Beers</h2>
+<div>@Html.ActionLink("Back To Index", "Index")</div>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Family</th>
+            <th>Type</th>
+            <th>IBU</th>
+            <th>ABV</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var beer in Model)
+        {
+            <tr>
+                <td>@beer.Name</td>
+                <td>@beer.Family</td>
+                <td>@beer.Type</td>
+                <td>@beer.IBU</td>
+                <td>@beer.ABV</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

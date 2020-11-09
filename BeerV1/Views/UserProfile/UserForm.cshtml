@@ -1,0 +1,96 @@
+﻿@model BeerV1.ViewModels.UserFormViewModel
+@{
+    ViewBag.Title = "User Form";
+}
+
+@if (Model.User.UserID == 0)
+{
+    <h2>New User</h2>
+}
+else
+{
+    <h2>Edit @Model.User.FullName</h2>
+}
+
+@using (Html.BeginForm("save", "userprofile", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.HiddenFor(u => u.User.UserID)
+
+    <div class="form-group">
+        @Html.LabelFor(u => u.User.FirstName, new { @class = "control-label col-sm-2" })
+        <div class="col-sm-10">
+            @Html.TextBoxFor(u => u.User.FirstName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(u => u.User.FirstName)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(u => u.User.LastName, new { @class = "control-label col-sm-2" })
+        <div class="col-sm-10">
+            @Html.TextBoxFor(u => u.User.LastName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(u => u.User.LastName)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(u => u.User.BirthDate, new { @class = "control-label col-sm-2" })
+        <div class="col-sm-10">
+            @Html.TextBoxFor(u => u.User.BirthDate, "{0:d MMM yyy}", new { @class = "form-control" })
+            @Html.ValidationMessageFor(u => u.User.BirthDate)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(u => u.User.Gender, new { @class = "control-label col-sm-2" })
+        <div class="col-sm-10">
+            @Html.EnumDropDownListFor(u => u.User.Gender,"Select Gender",new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(u => Model.Locations, new { @class = "control-label col-sm-2" })
+        <div class="col-sm-10">
+            @Html.DropDownListFor(u => u.User.LocationID, new SelectList(Model.Locations, "LocationID", "FullLocation"), "Select Address", new { @class = "form-control" })
+            @Html.ValidationMessageFor(u => u.User.LocationID)
+        </div>
+    </div>
+
+    @*<div class="form-group">
+            @Html.LabelFor(u => u.User.Location.Address, new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                @Html.TextBoxFor(u => u.User.Location.Address, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(u => u.User.Location.PostalCode, new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                @Html.TextBoxFor(u => u.User.Location.PostalCode, new { @class = "form-control" })
+            </div>
+        </div>*@
+    if (Model.User.UserID != 0)
+    {
+        <div class="form-group">
+            @Html.LabelFor(u => u.ChosenBeers, new { @class = "control-label col-sm-2" })
+
+            @foreach (var beer in Model.ChosenBeers)
+            {
+            <div class="col-sm-offset-2 col-sm-10">
+
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" @Html.Raw(beer.Chosen ? "checked" : "") value="@beer.BeerId" name="selectedBeers" /> @beer.Name
+                    </label>
+                </div>
+            </div>
+            }
+
+        </div>
+    }
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </div>
+}
+

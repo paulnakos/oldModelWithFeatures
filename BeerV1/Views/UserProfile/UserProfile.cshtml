@@ -1,0 +1,30 @@
+﻿@model BeerV1.Models.UserProfile
+@{
+    ViewBag.Title = "Profile";
+}
+
+<h2>@Model.User.FullName Profile </h2> <button class="btn btn-default">@Html.ActionLink("Edit Profile", "edit", new { id = Model.UserID })</button>
+<br /><br />
+<ul class="list-group">
+    <li class="list-group-item">First Name: @Model.User.FirstName</li>
+    <li class="list-group-item">Last Name: @Model.User.LastName</li>
+    <li class="list-group-item">Birth Date: @Model.User.BirthDate</li>
+    <li class="list-group-item">Country: @Model.User.Location.Country</li>
+    <li class="list-group-item">Address: @Model.User.Location.Address</li>
+    <li class="list-group-item">Address: @Model.User.Location.PostalCode</li>
+    <li class="list-group-item">
+        Favorite Beers
+        @if (Model.Beers.Count == 0)
+        {
+            <p>No Beers added yet!</p>
+        }
+        <ul>
+            @foreach (var beer in Model.Beers)
+            {
+                <li>Name: @beer.Name | Family: @beer.Family | Color: @beer.Color  </li>
+            }
+        </ul>
+    </li>
+</ul>
+
+

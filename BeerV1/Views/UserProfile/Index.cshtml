@@ -1,0 +1,97 @@
+﻿@model BeerV1.ViewModels.UserRelatedData
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>User Profiles</h2>
+<span class="btn btn-default">@Html.ActionLink("Create User", "new", "UserProfile")</span>
+<br /><br />
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Last Name</th>
+            <th>Gender</th>
+            <th>Birth Date</th>
+            <th>Country</th>
+            <th>Address</th>
+            <th></th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.UserProfiles)
+        {
+            var selectedRow = "";
+            if (user.User.UserID == Model.UserID)
+            {
+                selectedRow = "info";
+            }
+        <tr class="@selectedRow">
+            <td>@user.User.FirstName</td>
+            <td>@user.User.LastName</td>
+            <td>@user.User.Gender</td>
+            <td>@user.User.BirthDate.Value.ToLongDateString()</td>
+            @if (user.User.LocationID.HasValue)
+            {
+                if (!string.IsNullOrWhiteSpace(user.User.Location.Country))
+                {
+                    <td> @user.User.Location.Country </td>
+                }
+                else
+                {
+                    <td>Country not found</td>
+                }
+
+            }
+            else
+            {
+                <td>Country not found</td>
+            }
+            @if (user.User.Location != null)
+            {
+                if (!string.IsNullOrWhiteSpace(user.User.Location.Address))
+                {
+                    <td> @user.User.Location.Address </td>
+                }
+                else
+                {
+                    <td>Address not found</td>
+                }
+            }
+            else
+            {
+                <td>Address not found</td>
+            }
+            <td>
+                @Html.ActionLink("Favorite Beers", "index", new { id = user.User.UserID }) |
+                @Html.ActionLink("Profile", "userprofile", new { id = user.User.UserID })
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model.FavoriteBeers != null)
+{
+    <table class="table table-bordered">
+        <tr>
+            <th>Name</th>
+            <th>Family</th>
+            <th>Type</th>
+        </tr>
+
+        @foreach (var beer in Model.FavoriteBeers)
+        {
+            <tr>
+                <td>@beer.Name</td>
+                <td>@beer.Family</td>
+                <td>@beer.Type</td>
+            </tr>
+        }
+
+
+    </table>
+}
+
